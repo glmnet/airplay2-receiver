@@ -485,7 +485,7 @@ class AP2Handler(http.server.BaseHTTPRequestHandler):
         elif content_type == HTTP_CT_IMAGE:
             if content_len > 0:
                 fname = None
-                with tempfile.NamedTemporaryFile(prefix="artwork", dir=".", delete=False) as f:
+                with tempfile.NamedTemporaryFile(prefix="artwork", dir=".", delete=False, suffix=".jpg") as f:
                     f.write(self.rfile.read(content_len))
                     fname = f.name
                 print("Artwork saved to %s" % fname)
@@ -864,6 +864,16 @@ if __name__ == "__main__":
                 exit(-1)
     except Exception:
         print("[!] Network interface not found")
+        print("Available network interfaces:")
+        for interface in ni.interfaces():
+            print(f'Interface: "{interface}"')
+            addrs = ni.ifaddresses(interface)
+            for address_family in addrs:
+                if address_family in [ni.AF_INET, ni.AF_INET6]:
+                    for ak in addrs[address_family]:
+                        for akx in ak:
+                            if str(akx) == 'addr':
+                                print(f"  {'IPv4' if address_family == ni.AF_INET else 'IPv6'}: {str(ak[akx])}")
         exit(-1)
 
     DEVICE_ID = None
