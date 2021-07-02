@@ -124,11 +124,15 @@ def setup_global_structs(args):
 
     sonos_one_setup = {
             'eventPort': 0,  # AP2 receiver event server
-            'timingPort': 0,
-            'timingPeerInfo': {
-                'Addresses': [
-                    IPV4, IPV6],
-                'ID': IPV4}
+
+            # Do not send timmingPeerInfo, this way AirPlay does not chooses us as
+            # timming principal
+
+            # 'timingPort': 0,
+            # 'timingPeerInfo': {
+            #     'Addresses': [
+            #         IPV4, IPV6],
+            #     'ID': IPV4}
             }
 
     sonos_one_setup_data = {
@@ -750,7 +754,7 @@ if __name__ == "__main__":
 
     DEVICE_ID = ifen[ni.AF_LINK][0]["addr"]
     IPV4 = ifen[ni.AF_INET][0]["addr"]
-    IPV6 = ifen[ni.AF_INET6][0]["addr"].split("%")[0]
+    #IPV6 = ifen[ni.AF_INET6][0]["addr"].split("%")[0]
 
     setup_global_structs(args)
 
